@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Grade Calculator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e2add7;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color:  #7a0274;
+            color: rgb(255, 255, 255);
+            text-align: center;
+            padding: 20px 0;
+            font-size: 24px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 70%;
+            align-items: center;
+        }
+
+        .form-container label {
+            font-size: 16px;
+            margin: 10px 0 5px;
+            display: block;
+            font-weight: 700;
+            color: #7a0274;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-container button {
+            background-color: #7a0274;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .form-container button:hover {
+            background-color: #b10ca8;
+        }
+
+        .output {
+            background-color: #c48cbc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .output h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .output p {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        .output p span {
+            font-weight: bold;
+            color: #0a0a0a;
+        }
+
+       
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #b30e9d;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #9ad4db;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        Student Grade Calculator
+    </header>
+
+    <div class="container">
+        <div class="form-container">
+            <form id="studentForm" onsubmit="calculateGrade(event)">
+                <label for="studentId">Student ID:</label>
+                <input type="text" id="studentId" required>
+
+                <label for="studentName">Name:</label>
+                <input type="text" id="studentName" required>
+
+                
+                <label for="subject1">Mark for Tamil:</label>
+                <input type="number" id="subject1" min="0" max="100" required>
+
+                <label for="subject2">Mark for Engliesh:</label>
+                <input type="number" id="subject2" min="0" max="100" required>
+
+                <label for="subject3">Mark for Maths:</label>
+                <input type="number" id="subject3" min="0" max="100" required>
+
+                <label for="subject4">Mark for Science:</label>
+                <input type="number" id="subject4" min="0" max="100" required>
+
+                <label for="subject5">Mark for Sicial Science:</label>
+                <input type="number" id="subject5" min="0" max="100" required>
+
+                <button type="submit">Calculate Grade</button>
+            </form>
+        </div>
+
+        <div class="output" id="output" style="display: none;">
+            <h2>Result:</h2>
+            <p><strong>Student ID:</strong> <span id="resultId">-</span></p>
+            <p><strong>Student Name:</strong> <span id="resultName">-</span></p>
+            <p><strong>Marks:</strong> <span id="resultMarks">-</span></p>
+            <p><strong>Percentage:</strong> <span id="resultPercentage">-</span></p>
+            <p><strong>Grade:</strong> <span id="resultGrade">-</span></p>
+        </div>
+
+    <script>
+        let students = [];
+
+        function calculateGrade(event) {
+            event.preventDefault(); 
+
+            
+            const id = document.getElementById('studentId').value.trim();
+            const name = document.getElementById('studentName').value.trim();
+            const subject1 = parseFloat(document.getElementById('subject1').value);
+            const subject2 = parseFloat(document.getElementById('subject2').value);
+            const subject3 = parseFloat(document.getElementById('subject3').value);
+            const subject4 = parseFloat(document.getElementById('subject4').value);
+            const subject5 = parseFloat(document.getElementById('subject5').value);
+
+         
+            if (!id || !name || isNaN(subject1) || isNaN(subject2) || isNaN(subject3) || isNaN(subject4) || isNaN(subject5) || 
+                subject1 < 0 || subject1 > 100 || subject2 < 0 || subject2 > 100 || subject3 < 0 || subject3 > 100 || 
+                subject4 < 0 || subject4 > 100 || subject5 < 0 || subject5 > 100) {
+                alert('Please fill all fields correctly!');
+                return;
+            }
+
+            
+            const totalMarks = subject1 + subject2 + subject3 + subject4 + subject5;
+            const percentage = (totalMarks / 500) * 100;
+            let grade;
+
+            if (percentage > 90) {
+                grade = 'A';
+            } else if (percentage > 80) {
+                grade = 'B';
+            } else if (percentage > 70) {
+                grade = 'C';
+            } else if (percentage > 60) {
+                grade = 'D';
+            } else if (percentage >= 50) {
+                grade = 'E';
+            } else {
+                grade = 'Fail';
+            }
+
+            const student = { id, name, marks: [subject1, subject2, subject3, subject4, subject5], percentage, grade };
+            students.push(student);
+
+           
+            document.getElementById('resultId').innerText = id;
+            document.getElementById('resultName').innerText = name;
+            document.getElementById('resultMarks').innerText = student.marks.join(', ');
+            document.getElementById('resultPercentage').innerText = percentage.toFixed(2) + '%';
+            document.getElementById('resultGrade').innerText = grade;
+
+            document.getElementById('output').style.display = 'block';
+
+            
+            updateStudentTable();
+        }
+
+        function updateStudentTable() {
+            const tableBody = document.getElementById('studentTable').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = ''; 
+
+            students.forEach(function (student) {
+                const row = tableBody.insertRow();
+
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                const cell3 = row.insertCell(2);
+                const cell4 = row.insertCell(3);
+                const cell5 = row.insertCell(4);
+
+                cell1.innerText = student.id;
+                cell2.innerText = student.name;
+                cell3.innerText = student.mark;
+                cell4.innerText = student.percentage.toFixed(2) + '%';
+                cell5.innerText = student.grade;
+            });
+        }
+    </script>
+
+</body>
+</html>
+
+
+    </script>
+
+</body>
+</html>
